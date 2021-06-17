@@ -1,24 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import Routes from './routes/routes';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="w-1/2 mx-auto py-1">
+      <Router>
+        <nav className="flex gap-1">
+          {Routes.map((route, index) => (
+            <NavLink 
+              className="text-gray-300 text-xs uppercase bg-gray-600 px-3 py-0.5 rounded-sm"
+              activeClassName="bg-gray-700"
+              key={ index }
+              exact={ route.exact }
+              to={ route.path }>
+              { route.name }
+            </NavLink>
+          ))}
+        </nav>
+        <div className="mt-3 px-1">
+          <Switch>
+            {Routes.map((route, index) => (
+              <Route 
+                key={ index }
+                path={ route.path }
+                exact={ route.exact }>
+                <route.component { ...route.props } />
+              </Route>
+            ))}
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 }
